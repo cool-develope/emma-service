@@ -1,0 +1,37 @@
+version: '2.1'
+services:
+  postgres:
+    image: postgres:13
+    restart: always
+    command: postgres -c 'max_connections=200'
+    environment:
+      - POSTGRES_DB=emma
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+        - ./postgres:/var/lib/postgresql
+    ports:
+        - "5430:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  runserver:
+    image: gcr.io/emma/emma-server
+    working_dir: /usr/src/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: bash -c "npm run serve"
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - BATCH_COUNT=10
+      - TEST_CASE=GENERAL
+      - USER_COUNT=10000
+      - MERCHANT_COUNT=5000
+      - TRANSACTION_COUNT=5000000
+    ports:
+      - "3000:3000"
+    links:
+      - postgres

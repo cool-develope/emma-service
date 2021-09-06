@@ -22,7 +22,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: bash -c "npm run serve"
+    command: bash -c "npm run generate && npm run serve"
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432

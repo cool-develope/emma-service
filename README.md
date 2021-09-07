@@ -15,6 +15,7 @@ Test using the following urls, can also test the performance.
 - http://localhost:3000/api/user/manual/1?start_date=2019-02-01&end_date=2021-08-01
 - http://localhost:3000/api/user/parallel/1?start_date=2019-02-01&end_date=2021-08-01
 
+This implementation is focused to improve the unit transaction, maybe need to improve the scalalbility using cache techniques (i.e. redis).
 
 ## Docker Build
 
